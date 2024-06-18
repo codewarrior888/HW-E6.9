@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Chat App</title>
+    {% load static %}
+    <link href="{% static 'style.css' %}" rel="stylesheet" />
+</head>
+<body image="">
+    <nav class="nav-menu">
+        <ul class="nav-ul">
+            <li class="nav-li">
+                <a class="nav-link" href="{% url 'index' %}">Home</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-li profile-li">
+                <a class="nav-link" id="username" href="{% url 'profile' %}"> My Profile </a>
+                <img class="avatar" src="{{ user.account.avatar.url }}" alt="Profile Picture">
+            </li>
+            {% if user.is_superuser %}
+            <li class="nav-li">
+                <a class="nav-link" href="{% url 'room-list' %}">Api</a>
+            </li>
+            {% endif %}
+            <li>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button class="nav-button" type="submit" style="font-size: 13px; padding-bottom: 34px;">Logout</button>
+                </form>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% block content %}{% endblock content %}
+</body>
+</html>

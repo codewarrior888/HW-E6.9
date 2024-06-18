@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}
+Chat App - Choose Room
+{% endblock title %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <input class="textInput" id="room-name-input" type="text" placeholder="Create a new room"
+        pattern="[\/^\/]" title="Character / and \ are not allowed">
+        <p class="small-hint">*Characters / and \ are not allowed</p>
+        <input class="button" id="room-name-submit" type="hidden" value="Enter">
+    </div>
+    <div class="users">
+        <h3 class="users-p" style="text-decoration: underline;">Registered users</h3><p class="users-p">Click the name to send a message!</p>
+        <div class="users-below">
+            {% for user in users %}
+                <ul class="users-ul">
+                    <li class="users-li"><a href="/chat/{{ user.account.user_uuid }}" class="users-link" style="color: #fa4753">{{ user.username }}</a></li>
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="users">
+        <h3 class="users-p" style="text-decoration: underline;">Join a Room</h3>
+        <div class="users-below">
+            {% for room in rooms %}
+                <ul class="users-ul">
+                    <li class="users-li">
+                        <a href="/chat/{{ room.room_name }}" class="users-link" style="color: #fa4753">{{ room.room_name }}</a>
+                        {% if user.is_superuser or room.created_by == user %}
+                            <form action="{% url 'delete_room' room.room_name %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="delete-button">Delete</button>
+                            </form>
+                        {% endif %}
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+    <script src="{% static 'index.js' %}"></script>
+{% endblock content %}

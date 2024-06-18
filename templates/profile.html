@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %} Chat App - Account {% endblock title %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <img class="circle" src="{{ user.account.avatar.url }}" />
+    <div class="media-body">
+        <h2 class="user-h2">{{ user.username }}</h2>
+    </div>
+    <form method="POST" enctype="multipart/form-data" class="form">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="legend" style="font-size: smaller; color: #fa4753">Update your profile here</legend>
+            {{ user_update_form }}
+            {{ account_update_form }}
+        </fieldset>
+        <div class="button-container">
+            <button type="submit" class="chat-button">Update</button>
+            <a href="{% url 'index' %}" class="leaveButton">Back</a>       
+        </div>
+    </form>
+</div>
+<script>
+    document.getElementById("avatar-clear_id").remove();
+    document.querySelector("label[for='avatar-clear_id']").remove();
+    document.querySelector("label[for='id_avatar']").remove();
+</script>
+{% endblock content %}
